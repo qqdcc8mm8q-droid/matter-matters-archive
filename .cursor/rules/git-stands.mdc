@@ -10,17 +10,18 @@ Remote `cursor` ist Cursor Origin — nicht als Gruppen-Push-Ziel nutzen.
 
 ## Branch
 
-- Eigene Arbeit immer auf `stand/<name>` (Name der Person oder des Agents, z.B. `stand/moritz`).
+- Jeder Stand: `stand/<name>-YYYY-MM-DD-HH-MM` (Name plus Datum und Uhrzeit, z.B. `stand/moritz-2026-11-05-13-17`).
+- Neuer Stand = neuer Branch mit aktueller Zeit, alten Stand nicht umbenennen oder überschreiben.
 - `main` nicht mit laufender Arbeit committen oder pushen. `main` nur zum Integrieren fertiger Stände.
 - Kein Force-Push auf `main` oder auf fremde `stand/*`-Branches.
 
 ```bash
 git fetch origin
-git checkout -B stand/<name> origin/main   # neuer Stand
-# oder: git checkout stand/<name> && git pull --ff-only origin stand/<name>
+STAMP=$(date '+%Y-%m-%d-%H-%M')
+git checkout -b stand/<name>-$STAMP
 git add -A
-git commit -m "Stand <name>: <was sich geändert hat>"
-git push -u origin stand/<name>
+git commit -m "Stand <name> $STAMP: <was sich geändert hat>"
+git push -u origin stand/<name>-$STAMP
 ```
 
 ## Nachverfolgbarkeit
