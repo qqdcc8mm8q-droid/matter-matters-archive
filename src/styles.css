@@ -1,0 +1,199 @@
+:root {
+  color-scheme: light;
+  --ink: #1c1915;
+  --muted: #6f675e;
+  --paper: #e7e1d6;
+  --paper-2: #efeae2;
+  --card: #f7f3ec;
+  --line: rgba(28, 25, 21, 0.16);
+  --oxide: #c4502a;
+  --serif: "Instrument Serif", serif;
+  --sans: "Outfit", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  letter-spacing: -0.011em;
+}
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 1px solid var(--oxide);
+  outline-offset: 2px;
+}
+
+.app {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 72px minmax(0, 1fr);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper-2);
+}
+.wordmark {
+  margin: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 28px;
+  line-height: 1;
+}
+.brand-sub, .hint, .kicker, .live-pill, .choice, .ports, .field > span, .eye {
+  font-family: var(--mono);
+}
+.brand-sub { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+.top-actions, .exports, .choices, .filters, .layer-top, .size-row, .color-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.live-pill, .text-button {
+  border: 1px solid var(--ink);
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+}
+.live-pill { display: inline-flex; gap: 8px; }
+.live-pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--oxide); }
+.text-button { background: transparent; }
+
+.workspace {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 340px;
+}
+.archive, .plate {
+  min-height: 0;
+  overflow: auto;
+  background: var(--paper-2);
+}
+.archive { border-right: 1px solid var(--ink); padding: 14px 12px 24px; }
+.plate { border-left: 1px solid var(--ink); padding: 14px 14px 28px; }
+.archive ul, .layers { list-style: none; margin: 0; padding: 0; }
+.filters { flex-wrap: wrap; gap: 0; margin-bottom: 10px; }
+.choice, .exports button, .eye {
+  border: 1px solid var(--ink);
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 7px;
+}
+.filters .choice, .choices .choice, .exports button { margin-left: -1px; }
+.filters .choice:first-child, .choices .choice:first-child, .exports button:first-child { margin-left: 0; }
+.choice[aria-pressed='true'], .eye[aria-pressed='true'] { background: var(--ink); color: var(--paper-2); }
+.search, .field input, .field textarea, .layer-top input, .color-field input:not([type='color']) {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  border-radius: 0;
+  padding: 6px 0;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.search { margin-bottom: 8px; }
+.archive-item {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.archive-item:hover { background: rgba(28, 25, 21, 0.04); }
+.archive-item strong, .archive-item small, .kicker { display: block; }
+.archive-item strong { font-weight: 500; margin: 2px 0; }
+.archive-item small, .hint { color: var(--muted); font-size: 12px; line-height: 1.4; }
+.kicker {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.canvas-wrap { min-width: 0; min-height: 0; }
+.matter-flow { background: var(--paper); }
+.tool-node {
+  width: 230px;
+  background: var(--card);
+  border: 1px solid var(--ink);
+  box-shadow: 4px 4px 0 rgba(28, 25, 21, 0.08);
+}
+.tool-node.is-plate { background: var(--ink); color: var(--paper-2); }
+.tool-node.is-vein,
+.tool-node.is-dense { width: 248px; }
+.tool-node.is-vein .tool-body,
+.tool-node.is-dense .tool-body {
+  max-height: 540px;
+  overflow: auto;
+}
+.tool-node.is-vein .choices,
+.tool-node.is-dense .choices { gap: 4px; }
+.tool-node.is-vein .choice,
+.tool-node.is-dense .choice { padding: 4px 6px; }
+.react-flow__node.selected .tool-node { box-shadow: 5px 5px 0 var(--oxide); }
+.tool-head { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px 0; }
+.tool-body { padding: 2px 12px 12px; }
+.tool-body h3 { margin: 0 0 6px; font-size: 18px; font-weight: 500; }
+.icon-x { border: 0; background: transparent; font-size: 18px; color: var(--muted); }
+.field { display: block; margin-top: 8px; }
+.field > span, .ports { color: var(--muted); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+.ports { display: flex; gap: 8px; margin: 0 0 6px; }
+.ports.out { justify-content: flex-end; margin: 8px 0 0; }
+.field textarea { resize: vertical; min-height: 58px; }
+.color-field input[type='color'] { width: 28px; height: 28px; padding: 0; border: 1px solid var(--ink); background: transparent; }
+.size-row input[type='range'] { flex: 1; accent-color: var(--oxide); }
+.size-row em, .size-row span { font-style: normal; font-family: var(--mono); font-size: 11px; }
+.is-plate .hint { color: #c8bfb2; }
+
+.plate canvas {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--ink);
+  background: #d9d2c6;
+  display: block;
+}
+.exports { margin: 10px 0 14px; flex-wrap: wrap; }
+.layers li {
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.layer-top input { font-family: var(--sans); font-size: 14px; }
+.choices { flex-wrap: wrap; margin-top: 8px; }
+
+.matter-flow .react-flow__handle {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+}
+.matter-flow .react-flow__handle.is-wired { background: var(--ink); }
+.matter-flow .react-flow__edge-path { stroke: var(--ink); stroke-width: 1.5; }
+.matter-flow .react-flow__edge.selected .react-flow__edge-path,
+.matter-flow .react-flow__connection-path { stroke: var(--oxide); }
+.matter-flow .react-flow__controls { border: 1px solid var(--ink); box-shadow: none; overflow: hidden; }
+.matter-flow .react-flow__controls-button { background: var(--card); border-bottom: 1px solid var(--ink); fill: var(--ink); }
+.matter-flow .react-flow__attribution { background: transparent; font-family: var(--mono); font-size: 10px; }
+
+@media (max-width: 1100px) {
+  .workspace { grid-template-columns: 1fr; grid-template-rows: auto minmax(480px, 1fr) auto; overflow: auto; }
+  .archive, .plate { border: 0; border-bottom: 1px solid var(--ink); }
+  .canvas-wrap { min-height: 480px; }
+}
