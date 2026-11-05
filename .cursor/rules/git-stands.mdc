@@ -1,5 +1,5 @@
 ---
-description: Jeder Agent-Stand liegt auf einem eigenen Git-Branch und wird getrennt nach GitHub gepusht.
+description: Jeder Mensch hat einen Stand-Branch; Datum, Uhrzeit und Beschreibung stehen im Commit.
 alwaysApply: true
 ---
 
@@ -10,24 +10,24 @@ Remote `cursor` ist Cursor Origin — nicht als Gruppen-Push-Ziel nutzen.
 
 ## Branch
 
-- Jeder Stand: `stand/<name>-YYYY-MM-DD-HH-MM` (Name plus Datum und Uhrzeit, z.B. `stand/moritz-2026-11-05-13-17`).
-- Neuer Stand = neuer Branch mit aktueller Zeit, alten Stand nicht umbenennen oder überschreiben.
+- Ein Branch pro Person: `stand/<name>` (z.B. `stand/moritz`). Darauf weiterarbeiten, nicht für jeden Stand einen neuen Branch.
 - `main` nicht mit laufender Arbeit committen oder pushen. `main` nur zum Integrieren fertiger Stände.
-- Kein Force-Push auf `main` oder auf fremde `stand/*`-Branches.
+- Kein Force-Push auf `main`. Auf `stand/*` nur nach `git pull`, kein `--force`.
 
 ```bash
 git fetch origin
-STAMP=$(date '+%Y-%m-%d-%H-%M')
-git checkout -b stand/<name>-$STAMP
+git checkout stand/<name> 2>/dev/null || git checkout -b stand/<name>
+git pull --ff-only origin stand/<name> || true
 git add -A
-git commit -m "Stand <name> $STAMP: <was sich geändert hat>"
-git push -u origin stand/<name>-$STAMP
+git commit -m "$(date '+%Y-%m-%d %H:%M') — <was sich geändert hat>"
+git push -u origin stand/<name>
 ```
 
-## Nachverfolgbarkeit
+## Commits
 
-- Commit-Message mit Person/Agent und Inhalt, nicht nur "update".
-- Nicht squash-mergen. Merge-Commit oder rebase nur auf dem eigenen Branch.
-- Fremde Stände nicht überschreiben. Integrieren: PR nach `main` oder `git merge` auf `main`.
+- Message immer `YYYY-MM-DD HH:MM — Beschreibung`, nicht nur "update".
+- Git speichert Autor und Zeit zusätzlich am Commit; die Message macht den Stand in der Liste lesbar.
+- Nicht squash-mergen. Fremden Stand holen, ändern, zurückpushen: gleicher Branch `stand/<name>`.
+- Integrieren nach `main`: PR oder `git merge`.
 
-Wenn jemand nicht direkt pushen kann: Fork anlegen, auf den Fork pushen, PR nach `qqdcc8mm8q-droid/matter-matters-archive` öffnen.
+Wenn jemand nicht direkt pushen kann: Fork anlegen, auf den Fork-Branch `stand/<name>` pushen, PR öffnen.
