@@ -1,0 +1,32 @@
+---
+description: Jeder Agent-Stand liegt auf einem eigenen Git-Branch und wird getrennt nach GitHub gepusht.
+alwaysApply: true
+---
+
+# Getrennte Agent-Stände
+
+Remote `origin` ist GitHub: `https://github.com/qqdcc8mm8q-droid/matter-matters-archive`.
+Remote `cursor` ist Cursor Origin — nicht als Gruppen-Push-Ziel nutzen.
+
+## Branch
+
+- Eigene Arbeit immer auf `stand/<name>` (Name der Person oder des Agents, z.B. `stand/moritz`).
+- `main` nicht mit laufender Arbeit committen oder pushen. `main` nur zum Integrieren fertiger Stände.
+- Kein Force-Push auf `main` oder auf fremde `stand/*`-Branches.
+
+```bash
+git fetch origin
+git checkout -B stand/<name> origin/main   # neuer Stand
+# oder: git checkout stand/<name> && git pull --ff-only origin stand/<name>
+git add -A
+git commit -m "Stand <name>: <was sich geändert hat>"
+git push -u origin stand/<name>
+```
+
+## Nachverfolgbarkeit
+
+- Commit-Message mit Person/Agent und Inhalt, nicht nur "update".
+- Nicht squash-mergen. Merge-Commit oder rebase nur auf dem eigenen Branch.
+- Fremde Stände nicht überschreiben. Integrieren: PR nach `main` oder `git merge` auf `main`.
+
+Wenn jemand nicht direkt pushen kann: Fork anlegen, auf den Fork pushen, PR nach `qqdcc8mm8q-droid/matter-matters-archive` öffnen.
