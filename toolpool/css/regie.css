@@ -1,0 +1,44 @@
+/* Tool Pool – Regie auf dem Mac mini */
+body.regie { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.rg-top { display: flex; align-items: baseline; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--line2); flex-wrap: wrap; }
+.rg-grow { flex: 1; }
+#rgFehler { color: var(--accent); }
+.rg-main { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 360px; }
+.rg-stationen { overflow: auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; align-content: start; }
+.rg-seite { overflow: auto; border-left: 1px solid var(--line2); }
+.rg-box { padding: 16px 20px; border-bottom: 1px solid var(--line2); }
+.rg-box h2 { font-size: 14px; margin: 0 0 12px; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.rg-box h2 .mono { font-weight: 400; font-size: 11px; text-align: right; }
+.rg-box p { font-size: 11px; margin: 8px 0; line-height: 1.45; }
+.rg-z { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; }
+.rg-z > span:first-child { flex: 0 0 112px; color: var(--ink2); }
+.rg-z input:not([type=checkbox]):not([type=color]), .rg-z select { flex: 1; min-width: 0; font: 12px var(--mono); padding: 5px 6px; background: var(--panel); color: var(--ink); border: 1px solid var(--line2); border-radius: 3px; }
+.rg-z input[type=range] { padding: 0; }
+.rg-z input[type=number] { flex: 0 0 72px; }
+details { margin-top: 12px; }
+summary { cursor: pointer; font-size: 11px; }
+.rg-seg { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--line2); border-radius: 3px; overflow: hidden; }
+.rg-seg button { flex: 1; padding: 7px 6px; font-size: 12px; background: none; color: var(--ink); border: 0; border-right: 1px solid var(--line2); cursor: pointer; }
+.rg-seg button:last-child { border-right: 0; }
+.rg-seg button.on { background: var(--ink); color: var(--bg); }
+.rg-k { padding: 5px 9px; font-size: 12px; background: none; color: var(--ink); border: 1px solid var(--line2); border-radius: 3px; cursor: pointer; white-space: nowrap; }
+.rg-k:hover, .rg-seg button:hover:not(.on) { background: var(--line); }
+.rg-reihe { display: flex; gap: 8px; flex-wrap: wrap; }
+.rg-swatch { width: 22px; height: 22px; border: 1px solid var(--line2); border-radius: 3px; }
+.rg-card { border: 1px solid var(--line2); border-radius: 4px; padding: 10px; display: flex; flex-direction: column; gap: 8px; background: var(--panel); }
+.rg-card.air { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.rg-card.off { opacity: .6; }
+.rg-kopf { display: flex; align-items: center; gap: 8px; }
+.rg-kopf input { flex: 1; min-width: 0; font: 600 13px var(--sans); background: none; border: 0; color: var(--ink); padding: 0; }
+.rg-punkt { width: 8px; height: 8px; border-radius: 50%; background: var(--mute2); flex: none; }
+.rg-card.on .rg-punkt { background: #27b868; }
+.rg-air { font: 10px var(--mono); color: var(--accent); }
+.rg-bild { aspect-ratio: 1 / 1.1; background: var(--ws); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.rg-bild img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.rg-bild .mono { font-size: 10px; padding: 10px; word-break: break-all; text-align: center; }
+.rg-info { font-size: 10.5px; display: flex; justify-content: space-between; gap: 8px; }
+.rg-info .warn { color: var(--accent); }
+.rg-card .rg-z { margin: 0; font-size: 11px; }
+.rg-card .rg-z > span:first-child { flex: 0 0 auto; }
+.rg-card .rg-z input { flex: 0 0 48px !important; }
+@media (max-width: 760px) { body.regie { overflow: auto; height: auto; } .rg-main { display: block; } .rg-seite { border-left: 0; } }

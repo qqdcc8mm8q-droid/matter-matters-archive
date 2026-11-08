@@ -1,0 +1,18 @@
+# Fertige Pakete (App, DMG, ZIP). Die App baut mac-app/Scripts/paket-bauen.sh neu.
+dist/
+*.zip
+*.dmg
+
+# Offline-Kopien fremder Seiten und Schriften. Neu holen mit: python3 offline_holen.py
+offline/
+
+# Einstellungen der Python-Regie auf dem jeweiligen Rechner
+regie-daten.json
+
+# macOS, Python, Xcode
+.DS_Store
+__pycache__/
+*.pyc
+xcuserdata/
+DerivedData/
+mac-app/build/

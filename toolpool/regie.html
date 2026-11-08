@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Tool Pool Regie</title>
+  <link rel="stylesheet" href="css/style.css?v=202611052200">
+  <link rel="stylesheet" href="css/regie.css?v=202611052200">
+</head>
+<body class="regie">
+  <header class="rg-top">
+    <b>Tool Pool · Regie</b>
+    <span class="mono mute" id="rgAdresse"></span>
+    <span class="rg-grow"></span>
+    <span class="mono" id="rgFehler" role="alert"></span>
+  </header>
+  <main class="rg-main">
+    <section class="rg-stationen" id="rgStationen" aria-label="Stationen"></section>
+    <aside class="rg-seite">
+      <section class="rg-box">
+        <h2>Bildschirm <span class="mono mute" id="mStatus"></span></h2>
+        <div class="rg-seg" id="mModus">
+          <button data-v="aus">Aus</button><button data-v="manuell">Von Hand</button><button data-v="reihe">Reihe</button><button data-v="zufall">Zufall</button><button data-v="aktivitaet">Aktivität</button>
+        </div>
+        <p class="mono mute" id="mHilfe"></p>
+        <label class="rg-z"><span>Wechsel alle</span><input type="number" min="3" max="3600" id="mSek" data-p="monitor.sekunden" data-n> s</label>
+        <label class="rg-z"><span>ATEM-Adresse</span><input id="mIp" placeholder="192.168.10.240" autocomplete="off"><button class="rg-k" id="mVerbinden">Verbinden</button></label>
+      </section>
+      <section class="rg-box">
+        <h2>Licht <span class="mono mute" id="lStatus"></span></h2>
+        <div class="rg-seg" id="lSzene">
+          <button data-v="aus">Aus</button><button data-v="farbe">Farbe</button><button data-v="atmen">Atmen</button><button data-v="wechsel">Wechsel</button><button data-v="aktivitaet">Aktivität</button>
+        </div>
+        <label class="rg-z"><span>Farbe</span><input type="color" data-p="licht.farbe"><i class="rg-swatch" id="lJetzt" title="Was gerade gesendet wird"></i></label>
+        <label class="rg-z"><span>Helligkeit</span><input type="range" min="0" max="100" data-p="licht.hell" data-n></label>
+        <label class="rg-z"><span>Blitz beim Druck</span><input type="checkbox" data-p="licht.druck_blitz"></label>
+        <details>
+          <summary class="mono mute">Art-Net einrichten</summary>
+          <label class="rg-z"><span>Ziel-Adresse</span><input data-p="licht.ziel" placeholder="PowerBox oder DataLink" autocomplete="off"></label>
+          <label class="rg-z"><span>Universum</span><input type="number" min="0" max="32767" data-p="licht.universum" data-n></label>
+          <label class="rg-z"><span>DMX-Adresse</span><input type="number" min="1" max="512" data-p="licht.adresse" data-n></label>
+          <label class="rg-z"><span>Belegung</span><select data-p="licht.layout"><option>RGB</option><option>RGBW</option><option>DRGB</option><option>DRGBW</option></select></label>
+          <label class="rg-z"><span>Anzahl Tubes</span><input type="number" min="1" max="100" data-p="licht.anzahl" data-n></label>
+        </details>
+      </section>
+      <section class="rg-box">
+        <h2>Ausstellung <span class="mono mute" id="aStatus"></span></h2>
+        <label class="rg-z"><span>Museumsmodus</span><input type="checkbox" data-p="ausstellung.museum"></label>
+        <label class="rg-z"><span>Live-Druck</span><input type="checkbox" data-p="ausstellung.live"></label>
+        <label class="rg-z"><span>Drucker</span><select id="aDrucker" data-p="ausstellung.drucker"></select></label>
+        <label class="rg-z"><span>Format</span><select data-p="ausstellung.format"><option>A4</option><option>A3</option></select></label>
+        <div class="rg-z"><span>Last Stationen</span><div class="rg-seg" id="aStufe"><button data-v="normal">Normal</button><button data-v="sparsam">Sparsam</button><button data-v="minimal">Minimal</button></div></div>
+        <p class="mono mute">Sparsam: 20 Bilder/s, keine Vorschau in den Bausteinen. Minimal: 12 Bilder/s, Plakat in halber Auflösung. Druck und Export bleiben voll.</p>
+        <div class="rg-reihe"><button class="rg-k" data-alle="reset">Alle zurücksetzen</button><button class="rg-k" data-alle="neuladen">Alle neu laden</button></div>
+      </section>
+    </aside>
+  </main>
+  <script src="js/regie.js?v=202611052200"></script>
+</body>
+</html>

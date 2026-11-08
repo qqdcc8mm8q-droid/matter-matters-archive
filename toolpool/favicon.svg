@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>.b{fill:#151515}.p{fill:#f1f0ed;stroke:#151515;stroke-width:3}@media (prefers-color-scheme:dark){.b{fill:#07070a}.p{fill:#16131f;stroke:#9b6cff}}</style>
+  <rect class="b" width="64" height="64" rx="14"/>
+  <path class="p" d="M14 14h12a6 6 0 1 1 12 0h12v12a6 6 0 1 0 0 12v12H38a6 6 0 1 0-12 0H14V38a6 6 0 1 1 0-12z"/>
+  <circle cx="32" cy="32" r="6" fill="#ff5a1f"/>
+</svg>

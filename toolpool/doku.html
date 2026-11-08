@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Tool Pool Dokumentation</title>
+  <style>
+    :root { --bg: #f1f0ed; --panel: #fafaf8; --ink: #151515; --mute: #6f6e69; --line: #d9d8d3; --accent: #c8400f; --code: #e8e7e2; color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #17161b; --panel: #1e1d23; --ink: #f0eff5; --mute: #a3a1ae; --line: #33313b; --accent: #ff7a45; --code: #292730; } }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif; display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 100vh; }
+    nav { position: sticky; top: 0; height: 100vh; overflow: auto; padding: 24px 16px; border-right: 1px solid var(--line); background: var(--panel); font-size: 13px; }
+    nav b { display: block; margin-bottom: 12px; }
+    nav a { display: block; padding: 3px 6px; color: var(--ink); text-decoration: none; border-radius: 4px; }
+    nav a:hover { background: var(--code); }
+    nav a.h3 { padding-left: 18px; color: var(--mute); }
+    main { max-width: 860px; padding: 32px 40px 80px; min-width: 0; }
+    h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; }
+    h2 { font-size: 21px; margin: 44px 0 10px; padding-top: 18px; border-top: 1px solid var(--line); }
+    h3 { font-size: 16px; margin: 26px 0 6px; }
+    a { color: var(--accent); }
+    code { font: 13px ui-monospace, "SF Mono", Menlo, monospace; background: var(--code); padding: 1px 4px; border-radius: 3px; overflow-wrap: anywhere; }
+    pre { background: var(--code); padding: 12px 14px; border-radius: 6px; overflow-x: auto; line-height: 1.4; }
+    pre code { padding: 0; background: none; overflow-wrap: normal; }
+    .tabelle { overflow-x: auto; margin: 12px 0; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; }
+    th, td { text-align: left; vertical-align: top; padding: 6px 10px; border-bottom: 1px solid var(--line); }
+    th { font-weight: 600; }
+    li { margin: 3px 0; }
+    li.aufgabe { list-style: none; margin-left: -20px; }
+    li.aufgabe input { margin-right: 6px; }
+    @media (max-width: 760px) { body { display: block; } nav { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); } main { padding: 20px 16px 60px; } }
+    @media print { nav { display: none; } body { display: block; background: #fff; } main { max-width: none; padding: 0; } }
+  </style>
+</head>
+<body>
+  <nav aria-label="Inhalt"><b>Inhalt</b><div id="inhalt"></div></nav>
+  <main id="text">Dokumentation wird geladen ...</main>
+  <script>
+    /* Zeigt DOKUMENTATION.md an, ohne Internet und ohne Zusatzpakete. Versteht den Teil von Markdown, den die Datei nutzt. */
+    const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    function inline(t) {
+      return esc(t).split(/(`[^`]+`)/).map((teil) => {
+        if (teil.startsWith('`') && teil.endsWith('`') && teil.length > 1) return '<code>' + teil.slice(1, -1) + '</code>';
+        return teil.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2">$1</a>');
+      }).join('');
+    }
+    const anker = (t) => t.toLowerCase().replace(/[^a-z0-9äöüß]+/g, '-').replace(/^-|-$/g, '');
+    function zeilen(md) {
+      const z = md.split('\n'), aus = [], toc = [];
+      for (let i = 0; i < z.length;) {
+        const l = z[i];
+        if (l.startsWith('```')) {
+          const code = [];
+          for (i++; i < z.length && !z[i].startsWith('```'); i++) code.push(z[i]);
+          i++;
+          aus.push('<pre><code>' + esc(code.join('\n')) + '</code></pre>');
+        } else if (/^#{1,3} /.test(l)) {
+          const n = l.match(/^#+/)[0].length, t = l.slice(n + 1), id = anker(t);
+          aus.push(`<h${n} id="${id}">${inline(t)}</h${n}>`);
+          if (n > 1) toc.push(`<a class="h${n}" href="#${id}">${esc(t.replace(/`/g, ''))}</a>`);
+          i++;
+        } else if (l.startsWith('|')) {
+          const r = [];
+          for (; i < z.length && z[i].startsWith('|'); i++) r.push(z[i].replace(/^\||\|$/g, '').split('|').map((c) => c.trim()));
+          const kopf = r[0], rest = r.slice(2);
+          aus.push('<div class="tabelle"><table><thead><tr>' + kopf.map((c) => '<th>' + inline(c) + '</th>').join('') + '</tr></thead><tbody>' +
+            rest.map((a) => '<tr>' + a.map((c) => '<td>' + inline(c) + '</td>').join('') + '</tr>').join('') + '</tbody></table></div>');
+        } else if (/^- /.test(l) || /^\d+\. /.test(l)) {
+          const geordnet = /^\d/.test(l), teile = [];
+          for (; i < z.length && (geordnet ? /^\d+\. /.test(z[i]) : /^- /.test(z[i])); i++) {
+            const t = z[i].replace(/^(- |\d+\. )/, '');
+            teile.push(t.startsWith('[ ] ') ? `<li class="aufgabe"><label><input type="checkbox">${inline(t.slice(4))}</label></li>` : '<li>' + inline(t) + '</li>');
+          }
+          aus.push((geordnet ? '<ol>' : '<ul>') + teile.join('') + (geordnet ? '</ol>' : '</ul>'));
+        } else if (!l.trim()) {
+          i++;
+        } else {
+          const t = [];
+          for (; i < z.length && z[i].trim() && !/^(#{1,3} |\||- |\d+\. |```)/.test(z[i]); i++) t.push(z[i]);
+          aus.push('<p>' + inline(t.join(' ')) + '</p>');
+        }
+      }
+      return { html: aus.join('\n'), toc: toc.join('') };
+    }
+    fetch('DOKUMENTATION.md').then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); }).then((md) => {
+      const { html, toc } = zeilen(md);
+      document.getElementById('text').innerHTML = html;
+      document.getElementById('inhalt').innerHTML = toc;
+    }).catch(() => { document.getElementById('text').textContent = 'Die Datei DOKUMENTATION.md konnte nicht geladen werden.'; });
+  </script>
+</body>
+</html>

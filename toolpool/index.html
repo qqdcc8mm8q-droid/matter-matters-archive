@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Tool Pool</title>
+  <link rel="stylesheet" href="css/style.css?v=202611052200">
+  <script>
+    try {
+      var t = JSON.parse(localStorage.getItem('toolpool.theme'));
+      t = t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+      var o = JSON.parse(localStorage.getItem('toolpool.outline')) || {};
+      document.documentElement.style.setProperty('--outline', o[t] || (t === 'dark' ? '#9b6cff' : '#151515'));
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div id="app">
+    <header class="top">
+      <div class="brand">Tool Pool</div>
+      <nav class="nav" id="nav">
+        <a data-view="archiv">Archiv</a>
+        <a data-view="baukasten">Baukasten</a>
+        <a data-view="notizen">Notizen</a>
+        <a data-view="ranking">Ranking</a>
+        <a data-view="drucken">Drucken</a>
+        <a data-view="vorstufe">Vorstufe</a>
+      </nav>
+      <div class="top-right"><label class="outline-pick mono" title="Farbe der Outlines">Outline <input type="color" id="outlineColor"></label><button class="link mono" id="themeBtn">● Dunkel</button><div class="setwrap"><button class="link mono" id="setBtn" title="Einstellungen">⚙</button><div class="setpop" id="setPop" hidden></div></div></div>
+    </header>
+
+    <main>
+      <!-- ARCHIV -->
+      <section class="view" id="view-archiv">
+        <div class="arch-bar">
+          <div class="tabs" id="archTabs">
+            <button data-m="drift">Drift</button>
+            <button data-m="index">Index</button>
+            <button data-m="kategorien">Kategorien</button>
+          </div>
+          <div class="chips mono" id="archChips"></div>
+          <div class="arch-tools">
+            <input id="archSearch" class="line-input" placeholder="Suche" autocomplete="off">
+            <button class="link mono" id="archRandom">Random ↗</button>
+          </div>
+        </div>
+        <div class="arch-body" id="archBody"></div>
+      </section>
+
+      <!-- BAUKASTEN -->
+      <section class="view" id="view-baukasten">
+        <aside class="palette" id="palette">
+          <div class="pal-head"><span>Bausteine</span><button class="link mono" id="palPrev" title="Mini-Vorschau der Bausteine an/aus">◩ Vorschau</button></div>
+          <input id="palSearch" class="line-input pal-search" placeholder="Suchen …" autocomplete="off">
+          <div class="chips mono tech" id="palTech"></div>
+          <div class="chips mono fam" id="palFam"></div>
+          <div class="pal-list" id="palList"></div>
+          <div class="pal-trash mono">hierher ziehen = löschen</div>
+        </aside>
+
+        <div class="workspace" id="ws">
+          <div class="ws-inner" id="wsInner"></div>
+          <div class="ws-hint" id="wsHint">Zieh einen Baustein hierher.<br><span class="mono">Rechts und unten andocken = verbinden</span></div>
+        </div>
+        <div class="ws-foot mono">
+          <button id="btnReset">reset</button>
+          <button id="btnRandom">random</button>
+          <button id="btnVar">neue Variation</button>
+          <span class="grow"></span>
+          <button id="btnWsPrev" title="Vorschau in den Bausteinen: klein, groß oder aus">Vorschau: klein</button>
+          <button id="btnPlay">❚❚ pause</button>
+          <span id="ms" class="mute"></span>
+        </div>
+
+        <aside class="inspector">
+          <div class="poster-head"><span>Plakat</span><span class="mono mute" id="posterInfo"></span><button class="link mono" id="btnBig">groß ↗</button></div>
+          <div class="poster-wrap" id="posterWrap"><canvas id="out" width="420" height="594"></canvas></div>
+          <div class="insp" id="insp"></div>
+          <div class="insp-actions">
+            <button class="btn dark" id="btnUpload">Hochladen</button>
+            <div class="row2">
+              <button class="btn" id="btnToPrint">Drucken</button>
+              <button class="btn" id="btnDownload">Export …</button>
+            </div>
+            <button class="btn" id="btnToVorstufe">→ Druckvorstufe</button>
+            <div class="xp" id="xpPop" hidden></div>
+          </div>
+          <input type="file" id="fileImg" accept="image/*" hidden>
+        </aside>
+      </section>
+
+      <!-- NOTIZEN -->
+      <section class="view" id="view-notizen">
+        <div class="notes-main">
+          <div class="page-head">
+            <h1>Notizen</h1><span class="mono mute">Arbeiten aus dem Baukasten · lokal gespeichert</span>
+            <span class="grow"></span>
+            <button class="link" id="noteAdd">+ Bild hinzufügen</button>
+            <input type="file" id="noteFile" accept="image/*" hidden>
+          </div>
+          <div class="notes-grid" id="notesGrid"></div>
+        </div>
+        <aside class="notes-side">
+          <div class="side-head"><span>Ranking</span><span class="mono mute">Tools</span></div>
+          <ol class="mini-rank" id="miniRank"></ol>
+        </aside>
+      </section>
+
+      <!-- RANKING -->
+      <section class="view" id="view-ranking">
+        <div class="duel">
+          <div class="page-head"><h1>Welches Tool?</h1><span class="mono mute">einfach klicken · Runde <span id="round">1</span></span></div>
+          <div class="duel-pair" id="duelPair"></div>
+          <button class="link mono" id="duelSkip">überspringen</button>
+        </div>
+        <div class="rank">
+          <div class="page-head"><h1>Ranking</h1><span class="grow"></span><span class="mono mute">gesamt</span></div>
+          <ol class="rank-list" id="rankList"></ol>
+        </div>
+      </section>
+
+      <!-- DRUCKEN -->
+      <section class="view" id="view-drucken">
+        <div class="pr-dialog">
+          <div class="pr-left">
+            <div class="pr-tabs">
+              <button data-t="druck" class="on">Drucken</button>
+              <button data-t="pdf">Adobe PDF exportieren</button>
+            </div>
+            <nav class="pr-sections" id="prSections"></nav>
+          </div>
+          <div class="pr-form" id="prForm"></div>
+          <div class="pr-right">
+            <div class="pr-preview" id="prPreview"></div>
+            <div class="pr-doc">
+              <div class="mono mute">Dokument</div>
+              <div class="pr-docrow">
+                <select id="prFormat" class="line-select"></select>
+                <button class="pr-orient" data-o="hoch">Hochformat</button>
+                <button class="pr-orient" data-o="quer">Querformat</button>
+                <label class="check"><input type="checkbox" id="prDouble"> Doppelseite</label>
+                <label class="check"><input type="checkbox" id="prFit"> Auf Seite vergrößern</label>
+              </div>
+              <div class="pr-docrow mono">
+                <label>B <input id="prW" class="line-input num" readonly> mm</label>
+                <label>H <input id="prH" class="line-input num" readonly> mm</label>
+              </div>
+              <div class="mono mute">Ränder</div>
+              <div class="pr-docrow mono" id="prMargins"></div>
+            </div>
+          </div>
+          <div class="pr-foot">
+            <button class="link" id="prSave">Vorgabe speichern …</button>
+            <span class="grow"></span>
+            <button class="link" id="prCancel">Abbrechen</button>
+            <button class="btn dark" id="prGo">Drucken</button>
+          </div>
+        </div>
+      </section>
+      <!-- DRUCKVORSTUFE / AUSSCHIESSEN -->
+      <section class="view" id="view-vorstufe">
+        <aside class="vs-side" id="vsSide"></aside>
+        <div class="vs-main">
+          <div class="vs-bar mono" id="vsBar"></div>
+          <div class="vs-stage" id="vsStage"><canvas id="vsCanvas"></canvas></div>
+          <div class="vs-strip" id="vsStrip"></div>
+        </div>
+        <aside class="vs-info" id="vsInfo"></aside>
+      </section>
+    </main>
+  </div>
+
+  <div id="printRoot"></div>
+  <div id="toast" class="toast mono"></div>
+
+  <script src="js/data.js?v=202611052200"></script>
+  <script src="offline/manifest.js?v=202611052200"></script>
+  <script src="js/hsd.js?v=202611052200"></script>
+  <script src="js/engine.js?v=202611052200"></script>
+  <script src="js/shader.js?v=202611052200"></script>
+  <script src="js/playgrnd.js?v=202611052200"></script>
+  <script src="js/moldaw.js?v=202611052200"></script>
+  <script src="js/app.js?v=202611052200"></script>
+  <script src="js/vendor/gifenc.js?v=202611052200"></script>
+  <script src="js/vendor/webm-muxer.js?v=202611052200"></script>
+  <script src="js/vendor/mp4-muxer.js?v=202611052200"></script>
+  <script src="js/export.js?v=202611052200"></script>
+  <script src="js/vendor/pdf-lib.min.js?v=202611052200"></script>
+  <script src="js/vorstufe.js?v=202611052200"></script>
+  <script src="js/druckpdf.js?v=202611052200"></script>
+  <script src="js/museum.js?v=202611052200"></script>
+  <script src="js/fern.js?v=202611052200"></script>
+  <script src="js/station.js?v=202611052200"></script>
+</body>
+</html>
